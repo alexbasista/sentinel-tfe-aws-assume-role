@@ -1,0 +1,28 @@
+validate_assumed_roles_with_map = func(roles_map, workspace_name) {
+  validated = true
+
+  assumed_roles = get_assumed_roles()
+
+  for assumed_roles as address, role {
+    if role is not "none" {
+      if role not in keys(roles_map) {
+        print("AWS provider", address, "has assumed role",
+              role, "that is not allowed.")
+        validated = false
+      } else {
+        matched = false
+        for roles_map[role] as workspace_regex {
+          if workspace_name matches workspace_regex {
+            matched = true
+          }
+        }
+        if not matched {
+          print("Workspace", workspace_name, "is not allowed to assume this role.", role)
+          validated = false
+        }
+      }
+    }
+  }
+
+  return validated
+}

@@ -1,0 +1,25 @@
+import "tfrun"
+import "aws-functions" as aws
+
+allowed_roles = {
+  "arn:aws:iam::012345678901:role/role-dev": [
+    "(.*)-dev$",
+    "^dev-(.*)",
+  ],
+  "arn:aws:iam::987654321098:role/role-qa": [
+    "(.*)-qa$",
+    "^qa-(.*)",
+  ],
+  "arn:aws:iam::123456789876:role/role-prod": [
+    "(.*)-prod$",
+    "^prod-(.*)",
+  ],
+}
+
+workspace_name = tfrun.workspace.name
+
+validated_roles = aws.validate_assumed_roles_with_map(allowed_roles, workspace_name)
+
+main = rule {
+  validated_roles
+}
