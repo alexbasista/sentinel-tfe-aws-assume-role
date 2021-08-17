@@ -1,3 +1,15 @@
+get_assumed_roles = func() {
+  assumed_roles = {}
+
+  aws_providers = config.find_providers_by_type("aws")
+
+  for aws_providers as address, data {
+    assumed_roles[address] = determine_role_arn(address, data)
+  }
+
+  return assumed_roles
+}
+
 validate_assumed_roles_with_map = func(roles_map, workspace_name) {
   validated = true
 
