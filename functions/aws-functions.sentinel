@@ -1,3 +1,5 @@
+import "tfconfig-functions" as config
+
 get_assumed_roles = func() {
   assumed_roles = {}
 
