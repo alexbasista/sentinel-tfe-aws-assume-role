@@ -1,0 +1,1 @@
+# sentinel-tfe-aws-assume-role
